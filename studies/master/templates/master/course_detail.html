@@ -1,0 +1,11 @@
+{% extends 'master/base.html' %}
+{% block content %}
+<div>Course Name: {{ course.course_name }}</div>
+<div>ECTS: {{ course.credit_points }}</div>
+<div>Typ: {{ course.course_type }}</div>
+<div>Vertiefungsfächer:
+    {% for vf in categories %}
+    <p>{{ vf }}</p>
+    {% endfor %}
+</div>
+{% endblock content %}

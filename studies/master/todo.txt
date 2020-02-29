@@ -1,0 +1,2 @@
+- Klausurtermin als Feld bei Course
+- Benutzer mit je eigenen Kursen -> Feld mit User zu Kurs

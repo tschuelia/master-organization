@@ -1,0 +1,21 @@
+{% extends "master/base.html" %}
+{% block content %}
+<div>
+    <div class="h3 section-header">
+        Vertiefungsfach 1: {{ spec1_name }}
+    </div>
+    <table>
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+        </tr>
+        {% for course in spec1 %}
+        <tr>
+            <td>{{ course.course_name }}</td>
+            <td>{{ course.credit_points }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+{% endblock content %}
