@@ -163,4 +163,6 @@ def get_total_average():
     categories = Category.objects.all()
     sum_credits = sum(c.credit_points for cat in categories for c in cat.get_included_courses() if c.grade > 0)
     total_grades = sum(c.grade * c.credit_points for cat in categories for c in cat.get_included_courses() if c.grade > 0)
+    if sum_credits <= 0:
+        return 0
     return floor(10 * (total_grades / sum_credits)) / 10
