@@ -1,0 +1,37 @@
+<div class="mb-5">
+    <div class="h3 section-header">
+        {{ title }}
+        {% if param.is_valid %}
+            <i class="far fa-check-circle" style="color:limegreen"></i>
+        {% else %} 
+            <i class="far fa-times-circle" style="color:darkred"></i>
+        {% endif %}
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ param.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ param.get_missing_credits }}</div>
+        <div class="h6">Durchschnitt: {% if param.get_average > 0 %}{{ param.get_average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+            <th>mögliche Vertiefungsfächer</th>
+            <th>Semester der Prüfung</th>
+            <th>Note</th>
+            <th>angerechnet</th>
+        </tr>
+        {% for course in param.get_courses %}
+        <tr>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
+            <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+            <td>{{ course.get_specializations_abbreviations }}</td>
+            <td>{{ course.semester }}</td>
+            <td>{% if course.grade > 0 %}{{ course.grade }} {% else %} Noch keine Note {% endif %}</td>
+            <td>{% if course.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

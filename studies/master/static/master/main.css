@@ -67,3 +67,13 @@ body {
     text-decoration: none;
     color: var(--teal)
   }
+
+  .nav-delete {
+    text-decoration: none;
+    color: #333333;
+  }
+
+  .nav-delete:hover {
+    text-decoration: none;
+    color: darkred
+  }

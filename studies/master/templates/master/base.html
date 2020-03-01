@@ -28,12 +28,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{% url 'overview' %}">Übersicht</a>
+            <a href="{% url 'overview' %}" class="nav-item nav-link">Übersicht</a>
+            <a href="{% url 'semester-view' %}" class="nav-item nav-link">Semesteransicht</a>
           </div>
           <!-- navbar right side -->
           <div class="navbar-nav">
             {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'course-create' %}">+ Kurs</a>
+            <a class="nav-item nav-link" href="{% url 'course-create' %}"><i class="fas fa-plus-circle"></i> Kurs</a>
             <!-- 
             <a class="nav-item nav-link" href="{% url 'specialization-create' %}">+ Vertiefungsfach</a>
             <a class="nav-item nav-link" href="{% url 'type-create' %}">+ Kurstyp</a>

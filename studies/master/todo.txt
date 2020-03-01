@@ -1,7 +1,4 @@
 - User Config: Vertiefungsfächer Namen und Ergänzungsfachname -> in Overview dazu schreiben
-- Symbole Bereich abgeschlossen/offen
 - Klausurtermin als Feld bei Course
-- Endnote als Feld bei Course (blank=True! -> SQ)
 - Benutzer mit je eigenen Kursen -> Feld mit User zu Kurs
-- Note zu Klausur -> Durchschnitt berechnen pro Semester/gesamtes Studium
-- Haken bei Klausuren ob mit in Schnitt berechnen oder nicht
+- Semester Detailansicht mit Klausurterminen -> Link in Tabellen/auf Übersichtsseite
