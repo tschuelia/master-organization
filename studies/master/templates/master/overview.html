@@ -1,21 +1,184 @@
 {% extends "master/base.html" %}
+{% load mathfilters %}
 {% block content %}
-<div>
+<!-- Vertiefungsfach 1 -->
+<div class="mb-5">
     <div class="h3 section-header">
-        Vertiefungsfach 1: {{ spec1_name }}
+        Vertiefungsfach 1
     </div>
-    <table>
+    <div>
+        <div class="h6">ECTS: {{ major1.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ major1.get_missing_credits }}</div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+            <th>Vertiefungsfächer</th>
+        </tr>
+        {% for course in major1.get_courses %}
+        <tr>
+            <td>{{ course.course_name }}</td>
+            <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+            <td>{{ course.get_specializations_abbreviations }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!-- Vertiefungsfach 2 -->
+<div class="mb-5">
+    <div class="h3 section-header">
+        Vertiefungsfach 2
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ major2.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ major2.get_missing_credits }}</div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+            <th>Vertiefungsfächer</th>
+        </tr>
+        {% for course in major2.get_courses %}
+        <tr>
+            <td>{{ course.course_name }}</td>
+            <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+            <td>{{ course.get_specializations_abbreviations }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!-- Wahlbereich -->
+<div class="mb-5">
+    <div class="h3 section-header">
+        Wahlbereich
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ electives.get_sum_of_credits }}</div>
+        <div class="h6">noch mögliche ECTS: {{ electives.get_possible_credits }}</div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+            <th>Vertiefungsfächer</th>
+        </tr>
+        {% for course in electives.get_courses %}
+        <tr>
+            <td>{{ course.course_name }}</td>
+            <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+            <td>{{ course.get_specializations_abbreviations }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!-- Praktika und Seminare -->
+<div class="mb-5">
+    <div class="h3 section-header">
+        Praktika und Seminare
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ internships.get_sum_of_credits|add:seminars.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ 12|sub:internships.get_sum_of_credits|sub:seminars.get_sum_of_credits }}</div>
+    </div>
+    <div class="h5 mt-4">
+        Praktika
+    </div>
+    <div>
+        <div class="h7">ECTS: {{ internships.get_sum_of_credits }}</div>
+        <div class="h7">fehlende ECTS: {{ internships.get_missing_credits }}</div>
+    </div>
+    <table class=table>
+        <tr>
+            <th>Name</th>
+            <th>ECTS</th>
+            <th>Vertiefungsfächer</th>
+        </tr>
+        {% for course in internships.get_courses %}
+            <tr>
+                <td>{{ course.course_name }}</td>
+                <td>{{ course.credit_points }}</td>
+                <td>{{ course.get_specializations_abbreviations }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="h5">
+        Seminare
+    </div>
+    <div>
+        <div class="h7">ECTS: {{ seminars.get_sum_of_credits }}</div>
+        <div class="h7">fehlende ECTS: {{ seminars.get_missing_credits }}</div>
+    </div>
+    <table class=table>
+        <tr>
+            <th>Name</th>
+            <th>ECTS</th>
+            <th>Vertiefungsfächer</th>
+        </tr>
+        {% for course in seminars.get_courses %}
+            <tr>
+                <td>{{ course.course_name }}</td>
+                <td>{{ course.credit_points }}</td>
+                <td>{{ course.get_specializations_abbreviations }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+<!-- Ergänzungsfach -->
+<div class="mb-5">
+    <div class="h3 section-header">
+        Ergänzungsfach
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ minor.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ minor.get_missing_credits }}</div>
+        <div class="h6">noch mögliche ECTS: {{ minor.get_possible_credits }}</div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+        </tr>
+        {% for course in minor.get_courses %}
+        <tr>
+            <td>{{ course.course_name }}</td>
+            <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<!-- Schlüsselqualis -->
+<div class="mb-5">
+    <div class="h3 section-header">
+        Schlüsselqualis
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ soft_skills.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ soft_skills.get_missing_credits }}</div>
+        <div class="h6">noch mögliche ECTS: {{ soft_skills.get_possible_credits }}</div>
+    </div>
+    <table class="table">
         <tr>
             <th>Kursname</th>
             <th>ECTS</th>
         </tr>
-        {% for course in spec1 %}
+        {% for course in soft_skills.get_courses %}
         <tr>
             <td>{{ course.course_name }}</td>
             <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+            <td>{{ course.get_specializations_abbreviations }}</td>
         </tr>
         {% endfor %}
-
     </table>
 </div>
 {% endblock content %}

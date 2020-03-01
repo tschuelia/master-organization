@@ -32,9 +32,10 @@
           <div class="navbar-nav">
             {% if user.is_authenticated %}
             <a class="nav-item nav-link" href="{% url 'course-create' %}">+ Kurs</a>
-            <a class="nav-item nav-link" href="{% url 'category-create' %}">+ Vertiefungsfach</a>
+            <!-- 
+            <a class="nav-item nav-link" href="{% url 'specialization-create' %}">+ Vertiefungsfach</a>
             <a class="nav-item nav-link" href="{% url 'type-create' %}">+ Kurstyp</a>
-            <a class="nav-item nav-link" href="#">Login</a>
+            <a class="nav-item nav-link" href="#">Login</a>-->
            {% endif %}
           </div>
         </div>

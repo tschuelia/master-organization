@@ -4,7 +4,7 @@
 <div>ECTS: {{ course.credit_points }}</div>
 <div>Typ: {{ course.course_type }}</div>
 <div>Vertiefungsfächer:
-    {% for vf in categories %}
+    {% for vf in specializations %}
     <p>{{ vf }}</p>
     {% endfor %}
 </div>

@@ -1,2 +1,3 @@
 - Klausurtermin als Feld bei Course
 - Benutzer mit je eigenen Kursen -> Feld mit User zu Kurs
+- Note zu Klausur -> Durchschnitt berechnen pro Semester/gesamtes Studium
