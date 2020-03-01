@@ -1,11 +1,24 @@
 {% extends 'master/base.html' %}
 {% block content %}
-<div>Course Name: {{ course.course_name }}</div>
-<div>ECTS: {{ course.credit_points }}</div>
-<div>Typ: {{ course.course_type }}</div>
-<div>Vertiefungsfächer:
-    {% for vf in specializations %}
-    <p>{{ vf }}</p>
-    {% endfor %}
+<div>
+    <div class="row">
+        <div class="col-10 h3 section-header">{{ course.course_name }}</div>
+        <a class="nav-update" href="{% url 'course-update' course.pk %}"><i class="col-2 fas fa-edit text-right"></i></a>
+    </div>
 </div>
+
+<table class="table">
+    <tr>
+        <th>ECTS</th>
+        <th>Kurstyp</th>
+        <th>zugeordnet in Kategorie</th>
+        <th>mögliche Vertiefungsfächer</th>
+    </tr>
+    <tr>
+        <td>{{ course.credit_points }}</td>
+        <td>{{ course.course_type }}</td>
+        <td>{{ course.category }}</td>
+        <td>{{ course.get_specializations_abbreviations }}</td>
+    </tr>
+</table>
 {% endblock content %}

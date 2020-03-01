@@ -47,3 +47,23 @@ body {
   .section-header {
       color: var(--teal-darker); 
   }
+
+  .nav-detail {
+    text-decoration: none;
+    color: #333333;
+  }
+
+  .nav-detail:hover {
+    text-decoration: none;
+    color: var(--teal)
+  }
+
+  .nav-update {
+    text-decoration: none;
+    color: #333333;
+  }
+
+  .nav-update:hover {
+    text-decoration: none;
+    color: var(--teal)
+  }

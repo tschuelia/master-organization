@@ -1,5 +1,4 @@
 {% extends "master/base.html" %}
-{% load mathfilters %}
 {% block content %}
 <!-- Vertiefungsfach 1 -->
 <div class="mb-5">
@@ -15,11 +14,11 @@
             <th>Kursname</th>
             <th>ECTS</th>
             <th>Kurstyp</th>
-            <th>Vertiefungsfächer</th>
+            <th>mögliche Vertiefungsfächer</th>
         </tr>
         {% for course in major1.get_courses %}
         <tr>
-            <td>{{ course.course_name }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
             <td>{{ course.credit_points }}</td>
             <td>{{ course.course_type }}</td>
             <td>{{ course.get_specializations_abbreviations }}</td>
@@ -27,6 +26,7 @@
         {% endfor %}
     </table>
 </div>
+<hr>
 <!-- Vertiefungsfach 2 -->
 <div class="mb-5">
     <div class="h3 section-header">
@@ -41,11 +41,11 @@
             <th>Kursname</th>
             <th>ECTS</th>
             <th>Kurstyp</th>
-            <th>Vertiefungsfächer</th>
+            <th>mögliche Vertiefungsfächer</th>
         </tr>
         {% for course in major2.get_courses %}
         <tr>
-            <td>{{ course.course_name }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
             <td>{{ course.credit_points }}</td>
             <td>{{ course.course_type }}</td>
             <td>{{ course.get_specializations_abbreviations }}</td>
@@ -53,6 +53,7 @@
         {% endfor %}
     </table>
 </div>
+
 <!-- Wahlbereich -->
 <div class="mb-5">
     <div class="h3 section-header">
@@ -67,11 +68,11 @@
             <th>Kursname</th>
             <th>ECTS</th>
             <th>Kurstyp</th>
-            <th>Vertiefungsfächer</th>
+            <th>mögliche Vertiefungsfächer</th>
         </tr>
         {% for course in electives.get_courses %}
         <tr>
-            <td>{{ course.course_name }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
             <td>{{ course.credit_points }}</td>
             <td>{{ course.course_type }}</td>
             <td>{{ course.get_specializations_abbreviations }}</td>
@@ -79,14 +80,42 @@
         {% endfor %}
     </table>
 </div>
+
+<!-- Stammmodule -->
+<div class="mb-5">
+    <div class="h3 section-header">
+        Stammmodule
+    </div>
+    <div>
+        <div class="h6">ECTS: {{ base_modules.get_sum_of_credits }}</div>
+        <div class="h6">fehlende ECTS: {{ base_modules.get_missing_credits }}</div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+            <th>mögliche Vertiefungsfächer</th>
+        </tr>
+        {% for course in base_modules.get_courses %}
+        <tr>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
+            <td>{{ course.credit_points }}</td>
+            <td>{{ course.course_type }}</td>
+            <td>{{ course.get_specializations_abbreviations }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
 <!-- Praktika und Seminare -->
 <div class="mb-5">
     <div class="h3 section-header">
         Praktika und Seminare
     </div>
     <div>
-        <div class="h6">ECTS: {{ internships.get_sum_of_credits|add:seminars.get_sum_of_credits }}</div>
-        <div class="h6">fehlende ECTS: {{ 12|sub:internships.get_sum_of_credits|sub:seminars.get_sum_of_credits }}</div>
+        <div class="h6">ECTS: {{ sum_credits_int_sem }}</div>
+        <div class="h6">fehlende ECTS: {{ missing_int_sem }}</div>
     </div>
     <div class="h5 mt-4">
         Praktika
@@ -99,12 +128,12 @@
         <tr>
             <th>Name</th>
             <th>ECTS</th>
-            <th>Vertiefungsfächer</th>
+            <th>mögliche Vertiefungsfächer</th>
         </tr>
         {% for course in internships.get_courses %}
             <tr>
-                <td>{{ course.course_name }}</td>
-                <td>{{ course.credit_points }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
+            <td>{{ course.credit_points }}</td>
                 <td>{{ course.get_specializations_abbreviations }}</td>
             </tr>
         {% endfor %}
@@ -120,12 +149,12 @@
         <tr>
             <th>Name</th>
             <th>ECTS</th>
-            <th>Vertiefungsfächer</th>
+            <th>mögliche Vertiefungsfächer</th>
         </tr>
         {% for course in seminars.get_courses %}
             <tr>
-                <td>{{ course.course_name }}</td>
-                <td>{{ course.credit_points }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
+            <td>{{ course.credit_points }}</td>
                 <td>{{ course.get_specializations_abbreviations }}</td>
             </tr>
         {% endfor %}
@@ -149,7 +178,7 @@
         </tr>
         {% for course in minor.get_courses %}
         <tr>
-            <td>{{ course.course_name }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
             <td>{{ course.credit_points }}</td>
             <td>{{ course.course_type }}</td>
         </tr>
@@ -173,7 +202,7 @@
         </tr>
         {% for course in soft_skills.get_courses %}
         <tr>
-            <td>{{ course.course_name }}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
             <td>{{ course.credit_points }}</td>
             <td>{{ course.course_type }}</td>
             <td>{{ course.get_specializations_abbreviations }}</td>
