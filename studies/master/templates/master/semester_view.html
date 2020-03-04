@@ -1,13 +1,13 @@
 {% extends 'master/base.html' %}
 {% block content %}
-{% for sem in semesters %}
+{% for sem, values in params %}
 <div class="mb-5">
     <div class="h3 section-header">
         {{ sem }}
     </div>
     <div>
-        <div class="h6">ECTS: {{ sem.get_sum_of_credits }}</div>
-        <div class="h6">Semesterdurchschnitt: {% if sem.get_average > 0 %}{{ sem.get_average }} {% else %} Noch keine Noten für dieses Semester {% endif %}</div>
+        <div class="h6">ECTS: {{ values.credits }}</div>
+        <div class="h6">Semesterdurchschnitt: {% if values.average > 0 %}{{ values.average }} {% else %} Noch keine Noten für dieses Semester {% endif %}</div>
     </div>
     <table class="table">
         <tr>
@@ -17,13 +17,13 @@
             <th>Note</th>
             <th>angerechnet</th>
         </tr>
-        {% for course in sem.get_courses %}
+        {% for c in values.courses %}
         <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
-            <td>{{ course.credit_points }}</td>
-            <td>{{ course.course_type }}</td>
-            <td>{% if course.grade > 0 %}{{ course.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if course.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
+            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
+            <td>{{ c.course.credit_points }}</td>
+            <td>{{ c.course.course_type }}</td>
+            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
+            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
         </tr>
         {% endfor %}
     </table>

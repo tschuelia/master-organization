@@ -37,8 +37,11 @@
             <a class="nav-item nav-link" href="{% url 'course-create' %}"><i class="fas fa-plus-circle"></i> Kurs</a>
             <!-- 
             <a class="nav-item nav-link" href="{% url 'specialization-create' %}">+ Vertiefungsfach</a>
-            <a class="nav-item nav-link" href="{% url 'type-create' %}">+ Kurstyp</a>
-            <a class="nav-item nav-link" href="#">Login</a>-->
+            <a class="nav-item nav-link" href="{% url 'type-create' %}">+ Kurstyp</a>-->
+            <a class="nav-item nav-link" href="{% url 'profile' %}">Profil</a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
             {% endif %}
           </div>
         </div>

@@ -1,0 +1,33 @@
+{% extends 'master/base.html' %}
+{% block content %}
+<div>
+    <div class="row">
+        <div class="col-10 h3 section-header">{{ usercourse.course.course_name }}</div>
+        <a class="nav-update" href="{% url 'course-update' usercourse.pk %}"><i
+                class="col-2 fas fa-edit text-right"></i></a>
+        <a class="nav-delete" href="{% url 'course-delete' usercourse.pk %}"><i
+                class="col-2 fas fa-trash text-right"></i></a>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        <th>ECTS</th>
+        <th>Kurstyp</th>
+        <th>zugeordnet in Kategorie</th>
+        <th>mögliche Vertiefungsfächer</th>
+        <th>Semester der Prüfung</th>
+        <th>Note</th>
+        <th>angerechnet</th>
+    </tr>
+    <tr>
+        <td>{{ usercourse.course.credit_points }}</td>
+        <td>{{ usercourse.course.course_type }}</td>
+        <td>{{ usercourse.category }}</td>
+        <td>{{ usercourse.course.get_specializations_abbreviations }}</td>
+        <td>{{ usercourse.semester }}</td>
+        <td>{% if usercourse.grade > 0 %}{{ usercourse.grade }} {% else %} Noch keine Note {% endif %}</td>
+        <td>{% if usercourse.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
+    </tr>
+</table>
+{% endblock content %}

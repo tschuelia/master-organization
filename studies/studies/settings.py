@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'master.apps.MasterConfig',
+    'users.apps.UsersConfig',
     'crispy_forms',
     'fontawesome_5',
     'django.contrib.admin',
@@ -125,3 +126,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'overview'
+LOGIN_URL = 'login'
