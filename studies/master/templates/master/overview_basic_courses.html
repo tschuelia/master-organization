@@ -1,6 +1,6 @@
 <div class="mb-5">
     <div class="h3 section-header">
-        {{ title }}
+        {{ title }}{% if choice %}: {{ choice }} {% endif %}
         {% if param.is_valid %}
             <i class="far fa-check-circle" style="color:limegreen"></i>
         {% else %} 

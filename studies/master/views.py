@@ -13,6 +13,9 @@ from .models import (
     Category, 
     Semester
 )
+
+from users.models import Profile
+
 from django.urls import reverse_lazy
 
 def accumulate_information_for_category(category, user):
@@ -40,7 +43,7 @@ def accumulate_information_for_coursetype(course_type, user):
 @login_required
 def overview(request):
     user = request.user
-    specs = Specialization.objects.all()
+    profile = get_object_or_404(Profile, user=user)
 
     internship = accumulate_information_for_coursetype('Praktikum', user)
     seminar = accumulate_information_for_coursetype('Seminar', user)
@@ -50,7 +53,7 @@ def overview(request):
     seminars_and_internships_valid = missing_int_sem == 0
 
     params = {
-        'specs': specs,
+        'profile': profile,
         'total_credits': get_total_credits(user),
         'total_missing_credits': 90 - get_total_credits(user),
         'total_average': get_total_average(user),
@@ -96,13 +99,20 @@ def usercourse_detail(request, course_id):
 @login_required
 def confirm_usercourse(request, course_id):
     if request.method == 'GET':
-        course = get_object_or_404(Course, pk=course_id)
-        return render(request, 'master/confirm_course.html', {'course': course})
+        course = get_object_or_404(UserCourse, pk=course_id)
+        return render(request, 'master/confirm_usercourse.html', {'course': course})
     else:
-        course = get_object_or_404(Course, pk=course_id)
+        course = get_object_or_404(UserCourse, pk=course_id)
         course.included = False
         course.save()
         return redirect('course-detail', course_id=course.pk)
+
+def get_credits_sem_int(user):
+    internships = get_object_or_404(CourseType, type_name='Praktikum')
+    seminars = get_object_or_404(CourseType, type_name='Seminar')
+
+    return internships.get_sum_of_credits(user) + seminars.get_sum_of_credits(user)
+
 
 class UserCourseCreateView(LoginRequiredMixin, CreateView):
     model = UserCourse
@@ -138,7 +148,7 @@ class UserCourseUpdateView(LoginRequiredMixin, UpdateView):
 
 class UserCourseDeleteView(LoginRequiredMixin, DeleteView):
     model = UserCourse
-    success_url = ''
+    success_url = '/'
 
 class SpecializationCreateView(CreateView):
     model = Specialization

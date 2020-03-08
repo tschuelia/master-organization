@@ -1,4 +1,14 @@
 {% extends 'master/base.html' %}
 {% block content %}
-    <div class="h3">Profil von {{ user.username }}</div>
+    <div class="row">
+        <div class="col-10 h3 section-header">Profil von {{ user.username }}</div>
+        <a class="nav-update" href="{% url 'profile-update' profile.pk %}"><i
+                class="col-2 fas fa-edit text-right"></i></a>
+    </div>
+    <div>
+        Vertiefungsfach 1: {{ profile.major1 }}
+    </div>
+    <div>
+        Vertiefungsfach 2: {{ profile.major2 }}
+    </div>
 {% endblock content %}

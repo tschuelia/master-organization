@@ -57,7 +57,7 @@ class Specialization(models.Model):
     specialization_abbreviation = models.CharField(max_length=10, unique=True, verbose_name='Abkürzung')
 
     def __str__(self):
-        return '{} ({})'.format(self.specialization_name, self.specialization_abbreviation)
+        return self.specialization_name
 
     def get_absolute_url(self):
         return reverse('overview')

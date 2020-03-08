@@ -1,0 +1,12 @@
+{% extends "master/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Vertiefungsfächer anpassen</legend>
+        {{ form|crispy }}
+    </fieldset>
+        <button class="btn btn-outline-info" type="submit">Speichern</button>
+</form>
+{% endblock content %}

@@ -9,7 +9,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', views.overview, name='overview'),
+path('', views.overview, name='overview'),
     path('semesterview', views.semesters, name='semester-view'),
     #/master/course/5/
     path('course/<int:course_id>/', views.usercourse_detail, name='course-detail'),

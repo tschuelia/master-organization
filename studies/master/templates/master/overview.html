@@ -13,10 +13,10 @@
 </div>
 
 <!-- Vertiefungsfach 1 -->
-{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 %}
+{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 choice=profile.major1 %}
 <hr>
 <!-- Vertiefungsfach 2 -->
-{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 2" param=major2 %}
+{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 2" param=major2 choice=profile.major2 %}
 
 <!-- Wahlbereich -->
 <div class="mb-5">
@@ -53,7 +53,7 @@
 </div>
 
 <!-- Stammmodule -->
-{% include "master/overview_basic_courses.html" with title="Stammmodule" param=base_modules %}
+{% include "master/overview_basic_courses.html" with title="Stammmodule" param=base_modules%}
 
 <!-- Praktika und Seminare -->
 <div class="mb-5">
