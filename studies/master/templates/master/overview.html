@@ -13,200 +13,74 @@
 </div>
 
 <!-- Vertiefungsfach 1 -->
-{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 choice=profile.major1 %}
-<hr>
+{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 choice=student.major1 %}
 <!-- Vertiefungsfach 2 -->
-{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 2" param=major2 choice=profile.major2 %}
+{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 2" param=major2 choice=student.major2 %}
 
 <!-- Wahlbereich -->
-<div class="mb-5">
-    <div class="h3 section-header">
-        Wahlbereich
-    </div>
-    <div>
-        <div class="h6">ECTS: {{ electives.sum_of_credits }}</div>
-        <div class="h6">noch mögliche ECTS: {{ electives.possible_credits }}</div>
-        <div class="h6">Durchschnitt: {% if electives.average > 0 %}{{ electives.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</div>
-    </div>
-    <table class="table">
-        <tr>
-            <th>Kursname</th>
-            <th>ECTS</th>
-            <th>Kurstyp</th>
-            <th>mögliche Vertiefungsfächer</th>
-            <th>Semester der Prüfung</th>
-            <th>Note</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in electives.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.course_type }}</td>
-            <td>{{ c.course.get_specializations_abbreviations }}</td>
-            <td>{{ c.semester }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="card my-4">
+  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Wahlbereich</h5>
+  <div class="card-body">
+    <h6 class="card-title">ECTS: {{ electives.sum_of_credits }}</h6>
+    <h6 class="card-title">noch mögliche ECTS: {{ electives.possible_credits }}</h6>
+    <h6 class="card-title">Durchschnitt: {% if electives.average > 0 %}{{ electives.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
+    {% include "master/course_table.html" with courses=electives.courses %}
+  </div>
 </div>
 
 <!-- Stammmodule -->
 {% include "master/overview_basic_courses.html" with title="Stammmodule" param=base_modules%}
 
 <!-- Praktika und Seminare -->
-<div class="mb-5">
-    <div class="h3 section-header">
-        Praktika und Seminare
-        {% if seminars_and_internships_valid %}
-        <i class="far fa-check-circle" style="color:limegreen"></i>
-        {% else %}
-        <i class="far fa-times-circle" style="color:darkred"></i>
-        {% endif %}
+<div class="card my-4">
+  <h5 class="card-header {% if seminars_and_internships_valid %} text-success {% else %} text-danger {% endif %}">Praktika und Seminare</h5>
+  <div class="card-body">
+    <h6 class="card-title">ECTS: {{ sum_credits_int_sem }}</h6>
+    <h6 class="card-title">fehlende ECTS: {{ missing_int_sem }}</h6>
+    <div class="card my-4">
+        <h5 class="card-header {% if internships.is_valid %} text-success {% else %} text-danger {% endif %}">Praktika</h5>
+        <div class="card-body">
+            <h6 class="card-title">ECTS: {{ internships.sum_of_credits }}</h6>
+            <h6 class="card-title">fehlende ECTS: {{ internships.missing_credits }}</h6>
+            <h6 class="card-title">Durchschnitt: {% if internships.average > 0 %}{{ internships.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
+            {% include "master/course_table.html" with courses=internships.courses %}
+        </div>
     </div>
-    <div>
-        <div class="h6">ECTS: {{ sum_credits_int_sem }}</div>
-        <div class="h6">fehlende ECTS: {{ missing_int_sem }}</div>
+    <div class="card my-4">
+        <h5 class="card-header {% if seminars.is_valid %} text-success {% else %} text-danger {% endif %}">Seminare</h5>
+        <div class="card-body">
+            <h6 class="card-title">ECTS: {{ seminars.sum_of_credits }}</h6>
+            <h6 class="card-title">fehlende ECTS: {{ seminars.missing_credits }}</h6>
+            <h6 class="card-title">Durchschnitt: {% if seminars.average > 0 %}{{ seminars.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
+            {% include "master/course_table.html" with courses=seminars.courses %}
+        </div>
     </div>
-    <div class="h5 mt-4">
-        Praktika
-        {% if internships.is_valid %}
-        <i class="far fa-check-circle" style="color:limegreen"></i>
-        {% else %}
-        <i class="far fa-times-circle" style="color:darkred"></i>
-        {% endif %}
-    </div>
-    <div>
-        <div class="h7">ECTS: {{ internships.sum_of_credits }}</div>
-        <div class="h7">fehlende ECTS: {{ internships.missing_credits }}</div>
-        <div class="h6">Durchschnitt: {% if internships.average > 0 %}{{ internships.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</div>
-    </div>
-    <table class=table>
-        <tr>
-            <th>Name</th>
-            <th>ECTS</th>
-            <th>mögliche Vertiefungsfächer</th>
-            <th>Semester der Prüfung</th>
-            <th>Note</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in internships.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.get_specializations_abbreviations }}</td>
-            <td>{{ c.semester }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <div class="h5">
-        Seminare
-        {% if seminars.is_valid %}
-        <i class="far fa-check-circle" style="color:limegreen"></i>
-        {% else %}
-        <i class="far fa-times-circle" style="color:darkred"></i>
-        {% endif %}
-    </div>
-    <div>
-        <div class="h7">ECTS: {{ seminars.sum_of_credits }}</div>
-        <div class="h7">fehlende ECTS: {{ seminars.missing_credits }}</div>
-        <div class="h6">Durchschnitt: {% if seminars.average > 0 %}{{ seminars.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</div>
-    </div>
-    <table class=table>
-        <tr>
-            <th>Name</th>
-            <th>ECTS</th>
-            <th>mögliche Vertiefungsfächer</th>
-            <th>Semester der Prüfung</th>
-            <th>Note</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in seminars.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.get_specializations_abbreviations }}</td>
-            <td>{{ c.semester }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-    
-        </tr>
-        {% endfor %}
-    </table>
 </div>
+</div>
+
+
+
 <!-- Ergänzungsfach -->
-<div class="mb-5">
-    <div class="h3 section-header">
-        Ergänzungsfach
-        {% if minor.is_valid %}
-        <i class="far fa-check-circle" style="color:limegreen"></i>
-        {% else %}
-        <i class="far fa-times-circle" style="color:darkred"></i>
-        {% endif %}
-    </div>
-    <div>
-        <div class="h6">ECTS: {{ minor.sum_of_credits }}</div>
-        <div class="h6">fehlende ECTS: {{ minor.missing_credits }}</div>
-        <div class="h6">noch mögliche ECTS: {{ minor.possible_credits }}</div>
-        <div class="h6">Durchschnitt: {% if minor.average > 0 %}{{ minor.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</div>
-    </div>
-    <table class="table">
-        <tr>
-            <th>Kursname</th>
-            <th>ECTS</th>
-            <th>Kurstyp</th>
-            <th>Semester der Prüfung</th>
-            <th>Note</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in minor.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.course_type }}</td>
-            <td>{{ c.semester }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if c.included  %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="card my-4">
+  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
+  <div class="card-body">
+        <h6 class="card-title">ECTS: {{ minor.sum_of_credits }}</h6>
+        <h6 class="card-title">fehlende ECTS: {{ minor.missing_credits }}</h6>
+        <h6 class="card-title">noch mögliche ECTS: {{ minor.possible_credits }}</h6>
+        <h6 class="card-title">Durchschnitt: {% if minor.average > 0 %}{{ minor.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
+    {% include "master/course_table.html" with courses=minor.courses %}
+  </div>
 </div>
+
 <!-- Schlüsselqualis -->
-<div class="mb-5">
-    <div class="h3 section-header">
-        Schlüsselqualis
-        {% if soft_skills.is_valid %}
-        <i class="far fa-check-circle" style="color:limegreen"></i>
-        {% else %}
-        <i class="far fa-times-circle" style="color:darkred"></i>
-        {% endif %}
-    </div>
-    <div>
-        <div class="h6">ECTS: {{ soft_skills.sum_of_credits }}</div>
-        <div class="h6">fehlende ECTS: {{ soft_skills.missing_credits }}</div>
-        <div class="h6">noch mögliche ECTS: {{ soft_skills.possible_credits }}</div>
-    </div>
-    <table class="table">
-        <tr>
-            <th>Kursname</th>
-            <th>ECTS</th>
-            <th>Semester der Prüfung</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in soft_skills.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' course.pk %}">{{ course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.course_type }}</td>
-            <td>{{ c.course.get_specializations_abbreviations }}</td>
-            <td>{{ c.semester }}</td>
-            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="card my-4">
+  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
+  <div class="card-body">
+    <h6 class="card-title">ECTS: {{ soft_skills.sum_of_credits }}</h6>
+    <h6 class="card-title">fehlende ECTS: {{ soft_skills.missing_credits }}</h6>
+    <h6 class="card-title">noch mögliche ECTS: {{ soft_skills.possible_credits }}</h6>
+    {% include "master/course_table.html" with courses=soft_skills.courses %}
+  </div>
 </div>
 
 {% endblock content %}

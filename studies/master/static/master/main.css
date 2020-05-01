@@ -1,79 +1,8 @@
-:root {
-    --teal-lightest: #b2d8d8;
-    --teal-light: #66b2b2;
-    --teal: #008080;
-    --teal-darker: #006666;
-    --teal-darkest: #004c4c
-  }
+.course-detail-link {
+  color: #212529;
+}
 
-body {
-    background: #fafafa;
-    color: #333333;
-    margin-top: 5rem;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    color: #444444;
-  }
-  
-  ul {
-    margin: 0;
-  }
-  
-  .bg-teal {
-    background-color: var(--teal);
-  }
-  
-  .site-header .navbar-nav .nav-link {
-    color: var(--teal-lightest);
-  }
-  
-  .site-header .navbar-nav .nav-link:hover {
-    color: white;
-  }
-  
-  .site-header .navbar-nav .nav-link.active {
-    font-weight: 500;
-  }
-  
-  .content-section {
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-bottom: 20px;
-  }
-
-  .section-header {
-      color: var(--teal-darker); 
-  }
-
-  .nav-detail {
-    text-decoration: none;
-    color: #333333;
-  }
-
-  .nav-detail:hover {
-    text-decoration: none;
-    color: var(--teal)
-  }
-
-  .nav-update {
-    text-decoration: none;
-    color: #333333;
-  }
-
-  .nav-update:hover {
-    text-decoration: none;
-    color: var(--teal)
-  }
-
-  .nav-delete {
-    text-decoration: none;
-    color: #333333;
-  }
-
-  .nav-delete:hover {
-    text-decoration: none;
-    color: darkred
-  }
+.course-detail-link:hover {
+  text-decoration: none;
+  color: #6c757d;
+}

@@ -1,37 +1,11 @@
-<div class="mb-5">
-    <div class="h3 section-header">
-        {{ title }}{% if choice %}: {{ choice }} {% endif %}
-        {% if param.is_valid %}
-            <i class="far fa-check-circle" style="color:limegreen"></i>
-        {% else %} 
-            <i class="far fa-times-circle" style="color:darkred"></i>
-        {% endif %}
-    </div>
-    <div>
-        <div class="h6">ECTS: {{ param.sum_of_credits }}</div>
-        <div class="h6">fehlende ECTS: {{ param.missing_credits }}</div>
-        <div class="h6">Durchschnitt: {% if param.average > 0 %}{{ param.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</div>
-    </div>
-    <table class="table">
-        <tr>
-            <th>Kursname</th>
-            <th>ECTS</th>
-            <th>Kurstyp</th>
-            <th>mögliche Vertiefungsfächer</th>
-            <th>Semester der Prüfung</th>
-            <th>Note</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in param.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.course_type }}</td>
-            <td>{{ c.course.get_specializations_abbreviations }}</td>
-            <td>{{ c.semester }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="card my-4">
+  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">
+    {{ title }}{% if choice %}: {{ choice }} {% endif %}</h5>
+  <div class="card-body">
+    <h6 class="card-title">ECTS: {{ param.sum_of_credits }}</h6>
+    <h6 class="card-title">fehlende ECTS: {{ param.missing_credits }}</h6>
+    <h6 class="card-title">Durchschnitt: {% if param.average > 0 %}{{ param.average }} {% else %} Noch keine Noten für
+      diese Kategorie {% endif %}</h6>
+    {% include "master/course_table.html" with courses=param.courses %}
+  </div>
 </div>

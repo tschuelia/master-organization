@@ -1,12 +1,12 @@
 {% extends 'master/base.html' %}
 {% block content %}
 <div>
-    <p>Das {{ course.course_type }} das du hinzufügen möchtest ist nicht mehr anrechenbar, da bereits 18 ECTS im Bereich
+    <p>Das {{ studentcourse.course.course_type }} das du hinzufügen möchtest ist nicht mehr anrechenbar, da bereits 18 ECTS im Bereich
         Seminare und Praktika verrechnet sind.</p>
-    <p>Möchtest du {{ course.course_name }} dennoch zu deinem Studium hinzufügen?</p>
-    <p>Das {{ course.course_type }} wird dann nicht in die Anzahl ECTS und Durschnittsnote miteinberechnet.</p>
+    <p>Möchtest du {{ studentcourse.course_name }} dennoch zu deinem Studium hinzufügen?</p>
+    <p>Das {{ studentcourse.course_type }} wird dann nicht in die Anzahl ECTS und Durschnittsnote miteinberechnet.</p>
     <p>Du kannst die Auswahl der angerechneten Kurse auch später noch ändern.</p>
-    <form method="POST" action="{% url 'course-delete' course.pk%}">
+    <form method="POST" action="{% url 'course-delete' studentcourse.pk%}">
         {% csrf_token %}
         <button class="btn btn-outline-info" type="sumbit">Nein, löschen</button>
     </form>

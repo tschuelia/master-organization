@@ -1,32 +1,13 @@
 {% extends 'master/base.html' %}
 {% block content %}
 {% for sem, values in params %}
-<div class="mb-5">
-    <div class="h3 section-header">
-        {{ sem }}
-    </div>
-    <div>
-        <div class="h6">ECTS: {{ values.credits }}</div>
-        <div class="h6">Semesterdurchschnitt: {% if values.average > 0 %}{{ values.average }} {% else %} Noch keine Noten für dieses Semester {% endif %}</div>
-    </div>
-    <table class="table">
-        <tr>
-            <th>Kursname</th>
-            <th>ECTS</th>
-            <th>Kurstyp</th>
-            <th>Note</th>
-            <th>angerechnet</th>
-        </tr>
-        {% for c in values.courses %}
-        <tr>
-            <td><a class="nav-detail" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
-            <td>{{ c.course.credit_points }}</td>
-            <td>{{ c.course.course_type }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
-            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="card my-4">
+  <h5 class="card-header">{{ sem }}</h5>
+  <div class="card-body">
+    <h6 class="card-title">ECTS: {{ values.credits }}</h6>
+    <h6 class="card-title">Semesterdurchschnitt: {% if values.average > 0 %}{{ values.average }} {% else %} Noch keine Noten für dieses Semester {% endif %}</h6>
+    {% include "master/course_table.html" with courses=values.courses %}
+  </div>
 </div>
 {% endfor %}
 {% endblock content %}

@@ -1,0 +1,22 @@
+<table class="table">
+        <tr>
+            <th>Kursname</th>
+            <th>ECTS</th>
+            <th>Kurstyp</th>
+            <th>mögliche Vertiefungsfächer</th>
+            <th>Semester der Prüfung</th>
+            <th>Note</th>
+            <th>angerechnet</th>
+        </tr>
+        {% for c in courses %}
+        <tr>
+            <td><a class="course-detail-link" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
+            <td>{{ c.course.credit_points }}</td>
+            <td>{{ c.course.course_type }}</td>
+            <td>{{ c.course.get_specializations_abbreviations }}</td>
+            <td>{{ c.semester }}</td>
+            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Noch keine Note {% endif %}</td>
+            <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>

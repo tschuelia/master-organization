@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/Users/juliaschmid/miniconda3/envs/masterKIT/bin/python",
+    "python.pythonPath": "master_organization/bin/python",
     "python.jediEnabled": false
 }

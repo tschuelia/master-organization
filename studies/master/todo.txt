@@ -1,6 +1,6 @@
 - User Config: Vertiefungsfächer Namen und Ergänzungsfachname -> in Overview dazu schreiben
 - Prüfen bei Kurs anlegen ob zu VF1/2 passt
-- Klausurtermin als Feld bei UserCourse
+- Klausurtermin als Feld bei studentcourse
 - Benutzer mit je eigenen Kursen -> Feld mit User zu Kurs
 - Semester Detailansicht mit Klausurterminen -> Link in Tabellen/auf Übersichtsseite
 - Berechnung aus Wahlbereich was VF werden könnte -> Auswahl welche gewählt werden sollen und dann verschieben
