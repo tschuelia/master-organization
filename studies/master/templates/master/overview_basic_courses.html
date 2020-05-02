@@ -2,10 +2,7 @@
   <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">
     {{ title }}{% if choice %}: {{ choice }} {% endif %}</h5>
   <div class="card-body">
-    <h6 class="card-title">ECTS: {{ param.sum_of_credits }}</h6>
-    <h6 class="card-title">fehlende ECTS: {{ param.missing_credits }}</h6>
-    <h6 class="card-title">Durchschnitt: {% if param.average > 0 %}{{ param.average }} {% else %} Noch keine Noten für
-      diese Kategorie {% endif %}</h6>
+    {% include "master/category_metadata.html" with param=param render_missing=True render_possible=False  %}
     {% include "master/course_table.html" with courses=param.courses %}
   </div>
 </div>

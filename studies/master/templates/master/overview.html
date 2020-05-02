@@ -1,17 +1,37 @@
 {% extends "master/base.html" %}
 {% block content %}
 <!-- Gesamtes Studium -->
-<div class="mb-5">
-    <div class="h2 section-header">
-        Informatik Master am KIT
+<div class="card my-4">
+  <h2 class="card-header">Informatik Master am KIT</h2>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+        <table class="table table-sm table-borderless ">
+          <tbody>
+            <tr>
+              <td>ECTS gesamt</td>
+              <td>{{ total_credits  }}</td>
+            </tr>
+            <tr>
+              <td>fehlende ECTS (ohne Masterarbeit)</td>
+              <td>{{ total_missing_credits }}</td>
+            </tr>
+            <tr>
+              <td>Durchschnitt</td>
+              <td>
+                {% if total_average > 0 %}
+                {{ total_average }}
+                {% else %}
+                Noch keine Noten eingetragen
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div>
-        <div class="h6">ECTS gesamt: {{ total_credits }}</div>
-        <div class="h6">fehlende ECTS (ohne Masterarbeit): {{ total_missing_credits }}</div>
-        <div class="h6">Durchschnitt: {% if total_average > 0 %}{{ total_average }} {% else %} Noch keine Noten eingetragen {% endif %}</div>
-    </div>
+  </div>
 </div>
-
 <!-- Vertiefungsfach 1 -->
 {% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 choice=student.major1 %}
 <!-- Vertiefungsfach 2 -->
@@ -21,9 +41,7 @@
 <div class="card my-4">
   <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Wahlbereich</h5>
   <div class="card-body">
-    <h6 class="card-title">ECTS: {{ electives.sum_of_credits }}</h6>
-    <h6 class="card-title">noch mögliche ECTS: {{ electives.possible_credits }}</h6>
-    <h6 class="card-title">Durchschnitt: {% if electives.average > 0 %}{{ electives.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
+    {% include "master/category_metadata.html" with param=electives render_missing=False render_possible=True  %}
     {% include "master/course_table.html" with courses=electives.courses %}
   </div>
 </div>
@@ -33,29 +51,41 @@
 
 <!-- Praktika und Seminare -->
 <div class="card my-4">
-  <h5 class="card-header {% if seminars_and_internships_valid %} text-success {% else %} text-danger {% endif %}">Praktika und Seminare</h5>
+  <h5 class="card-header {% if seminars_and_internships_valid %} text-success {% else %} text-danger {% endif %}">
+    Praktika und Seminare</h5>
   <div class="card-body">
-    <h6 class="card-title">ECTS: {{ sum_credits_int_sem }}</h6>
-    <h6 class="card-title">fehlende ECTS: {{ missing_int_sem }}</h6>
-    <div class="card my-4">
-        <h5 class="card-header {% if internships.is_valid %} text-success {% else %} text-danger {% endif %}">Praktika</h5>
-        <div class="card-body">
-            <h6 class="card-title">ECTS: {{ internships.sum_of_credits }}</h6>
-            <h6 class="card-title">fehlende ECTS: {{ internships.missing_credits }}</h6>
-            <h6 class="card-title">Durchschnitt: {% if internships.average > 0 %}{{ internships.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
-            {% include "master/course_table.html" with courses=internships.courses %}
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <table class="table table-sm table-borderless ">
+          <tbody>
+            <tr>
+              <td>ECTS</td>
+              <td>{{ sum_credits_int_sem  }}</td>
+            </tr>
+            <tr>
+              <td>fehlende ECTS</td>
+              <td>{{ missing_int_sem }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="card my-4">
-        <h5 class="card-header {% if seminars.is_valid %} text-success {% else %} text-danger {% endif %}">Seminare</h5>
-        <div class="card-body">
-            <h6 class="card-title">ECTS: {{ seminars.sum_of_credits }}</h6>
-            <h6 class="card-title">fehlende ECTS: {{ seminars.missing_credits }}</h6>
-            <h6 class="card-title">Durchschnitt: {% if seminars.average > 0 %}{{ seminars.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
-            {% include "master/course_table.html" with courses=seminars.courses %}
-        </div>
+      <h5 class="card-header {% if internships.is_valid %} text-success {% else %} text-danger {% endif %}">Praktika
+      </h5>
+      <div class="card-body">
+        {% include "master/category_metadata.html" with param=internships render_missing=True render_possible=False  %}
+        {% include "master/course_table.html" with courses=internships.courses %}
+      </div>
     </div>
-</div>
+    <div class="card my-4">
+      <h5 class="card-header {% if seminars.is_valid %} text-success {% else %} text-danger {% endif %}">Seminare</h5>
+      <div class="card-body">
+        {% include "master/category_metadata.html" with param=seminars render_missing=True render_possible=False  %}
+        {% include "master/course_table.html" with courses=seminars.courses %}
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -64,10 +94,7 @@
 <div class="card my-4">
   <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
   <div class="card-body">
-        <h6 class="card-title">ECTS: {{ minor.sum_of_credits }}</h6>
-        <h6 class="card-title">fehlende ECTS: {{ minor.missing_credits }}</h6>
-        <h6 class="card-title">noch mögliche ECTS: {{ minor.possible_credits }}</h6>
-        <h6 class="card-title">Durchschnitt: {% if minor.average > 0 %}{{ minor.average }} {% else %} Noch keine Noten für diese Kategorie {% endif %}</h6>
+    {% include "master/category_metadata.html" with param=minor render_missing=True render_possible=True %}
     {% include "master/course_table.html" with courses=minor.courses %}
   </div>
 </div>
@@ -76,9 +103,7 @@
 <div class="card my-4">
   <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
   <div class="card-body">
-    <h6 class="card-title">ECTS: {{ soft_skills.sum_of_credits }}</h6>
-    <h6 class="card-title">fehlende ECTS: {{ soft_skills.missing_credits }}</h6>
-    <h6 class="card-title">noch mögliche ECTS: {{ soft_skills.possible_credits }}</h6>
+    {% include "master/category_metadata.html" with param=soft_skills render_missing=True render_possible=True  %}
     {% include "master/course_table.html" with courses=soft_skills.courses %}
   </div>
 </div>

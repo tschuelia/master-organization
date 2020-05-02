@@ -1,33 +1,56 @@
 {% extends 'master/base.html' %}
 {% block content %}
-<div>
-    <div class="row">
-        <div class="col-10 h3 section-header">{{ studentcourse.course.course_name }}</div>
-        <a class="nav-update" href="{% url 'course-update' studentcourse.pk %}"><i
-                class="col-2 fas fa-edit text-right"></i></a>
-        <a class="nav-delete" href="{% url 'course-delete' studentcourse.pk %}"><i
-                class="col-2 fas fa-trash text-right"></i></a>
+
+<div class="card my-4">
+    <div class="card-header">
+        <h4 class="float-left">{{ studentcourse.course.course_name }} ({{ studentcourse.course.course_type }})</h4>
+        <div class="float-right">
+            <a href="{% url 'course-update' studentcourse.pk %}" class="text-dark">
+                <i class="fas fa-edit text-right"></i>
+            </a>
+            <a href="{% url 'course-delete' studentcourse.pk %}" class="text-danger">
+                <i class="col-2 fas fa-trash text-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="card-header">
+        <h7>{{ studentcourse.category }}</h7>
+    </div>
+    <div class="card-body">
+        <table class="table table-sm table-borderless">
+            <tbody>
+                <tr>
+                    <td>ECTS</td>
+                    <td>{{ studentcourse.course.credit_points }}</td>
+                </tr>
+                <tr>
+                    <td>Prüfungssemester</td>
+                    <td>{{ studentcourse.semester }}</td>
+                </tr>
+                <tr>
+                    <td>Note</td>
+                    <td>{% if studentcourse.grade > 0 %}
+                        {{ studentcourse.grade }}
+                        {% else %}
+                        Noch keine Note eingetragen
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>angerechnet</td>
+                    <td>{% if studentcourse.included %}
+                        <i class="fas fa-check"></i>
+                        {% else %}
+                        <i class="fas fa-times"></i>{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mögliche Vertiefungsfächer</td>
+                    <td>{{ studentcourse.course.get_specializations_abbreviations }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<table class="table">
-    <tr>
-        <th>ECTS</th>
-        <th>Kurstyp</th>
-        <th>zugeordnet in Kategorie</th>
-        <th>mögliche Vertiefungsfächer</th>
-        <th>Semester der Prüfung</th>
-        <th>Note</th>
-        <th>angerechnet</th>
-    </tr>
-    <tr>
-        <td>{{ studentcourse.course.credit_points }}</td>
-        <td>{{ studentcourse.course.course_type }}</td>
-        <td>{{ studentcourse.category }}</td>
-        <td>{{ studentcourse.course.get_specializations_abbreviations }}</td>
-        <td>{{ studentcourse.semester }}</td>
-        <td>{% if studentcourse.grade > 0 %}{{ studentcourse.grade }} {% else %} Noch keine Note {% endif %}</td>
-        <td>{% if studentcourse.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
-    </tr>
-</table>
 {% endblock content %}
