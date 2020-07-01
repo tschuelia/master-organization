@@ -25,7 +25,7 @@ SECRET_KEY = "rd9*g$nk!$c7ulh^5cz#pz$b08o2l8_0u1ry*$29)l6s-fpag_"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "http://master.juliaschmid.com/"]
 
 
 # Application definition
