@@ -19,6 +19,7 @@ from .models import (
     get_missing_credits_sem_int,
     get_total_average,
     get_total_credits,
+    get_total_credits_passed,
 )
 
 
@@ -60,6 +61,7 @@ def overview(request):
     params = {
         "student": student,
         "total_credits": get_total_credits(student),
+        "total_credits_passed": get_total_credits_passed(student),
         "total_missing_credits": 90 - get_total_credits(student),
         "total_average": get_total_average(student),
         "major1": accumulate_information_for_category("Vertiefungsfach 1", student),

@@ -9,8 +9,12 @@
         <table class="table table-sm table-borderless ">
           <tbody>
             <tr>
-              <td>ECTS gesamt</td>
-              <td>{{ total_credits  }}</td>
+              <td>ECTS gesamt (geplant)</td>
+              <td>{{ total_credits }}</td>
+            </tr>
+            <tr>
+              <td>ECTS bestandene Prüfungen</td>
+              <td>{{ total_credits_passed }}</td>
             </tr>
             <tr>
               <td>fehlende ECTS (ohne Masterarbeit)</td>
@@ -101,7 +105,7 @@
 
 <!-- Schlüsselqualis -->
 <div class="card my-4">
-  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
+  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Schlüsselqualifikationen</h5>
   <div class="card-body">
     {% include "master/category_metadata.html" with param=soft_skills render_missing=True render_possible=True  %}
     {% include "master/course_table.html" with courses=soft_skills.courses %}

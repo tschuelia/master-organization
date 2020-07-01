@@ -189,6 +189,23 @@ class Category(models.Model):
             self.studentcourse_set.all().filter(included=True).filter(student=student)
         )
 
+    def get_included_courses_with_grade(self, student):
+        return (
+            self.studentcourse_set.all()
+            .filter(grade__gt=0)
+            .filter(included=True)
+            .filter(student=student)
+        )
+
+    def get_sum_of_credits_with_grade(self, student):
+        total = sum(
+            c.course.credit_points
+            for c in self.get_included_courses_with_grade(student)
+        )
+        return (
+            min(self.max_ects_creditable, total) if self.max_ects_creditable else total
+        )
+
     def get_sum_of_credits(self, student):
         total = sum(c.course.credit_points for c in self.get_included_courses(student))
         return (
@@ -295,6 +312,11 @@ class StudentCourse(models.Model):
 def get_total_credits(student):
     categories = Category.objects.all()
     return sum(c.get_sum_of_credits(student) for c in categories)
+
+
+def get_total_credits_passed(student):
+    categories = Category.objects.all()
+    return sum(c.get_sum_of_credits_with_grade(student) for c in categories)
 
 
 def get_total_average(student):
