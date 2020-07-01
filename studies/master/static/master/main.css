@@ -1,8 +1,8 @@
-.course-detail-link {
+.studentcourse-detail-link {
   color: #212529;
 }
 
-.course-detail-link:hover {
+.studentcourse-detail-link:hover {
   text-decoration: none;
   color: #6c757d;
 }

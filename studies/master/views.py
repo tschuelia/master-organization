@@ -3,7 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django_addanother.views import CreatePopupMixin
 
+from .forms import StudentCourseForm
 from .models import (
     Category,
     Course,
@@ -124,12 +126,12 @@ def confirm_studentcourse(request, course_id):
         studentcourse = get_object_or_404(StudentCourse, pk=course_id)
         studentcourse.included = False
         studentcourse.save()
-        return redirect("course-detail", course_id=studentcourse.pk)
+        return redirect("studentcourse-detail", course_id=studentcourse.pk)
 
 
 class StudentCourseCreateView(LoginRequiredMixin, CreateView):
     model = StudentCourse
-    fields = ["course", "category", "semester", "grade", "included"]
+    form_class = StudentCourseForm
 
     def form_valid(self, form):
         form.instance.student = self.request.user
@@ -138,14 +140,14 @@ class StudentCourseCreateView(LoginRequiredMixin, CreateView):
             self.object.course, self.object.included, self.request.user
         ):
             # no more seminars/internships creditable
-            return redirect("course-confirm", course_id=self.object.pk)
+            return redirect("studentcourse-confirm", course_id=self.object.pk)
 
-        return redirect("course-detail", course_id=self.object.pk)
+        return redirect("studentcourse-detail", course_id=self.object.pk)
 
 
 class StudentCourseUpdateView(LoginRequiredMixin, UpdateView):
     model = StudentCourse
-    fields = ["course", "category", "semester", "grade", "included"]
+    form_class = StudentCourseForm
 
     def form_valid(self, form):
         form.instance.student = self.request.user
@@ -154,9 +156,9 @@ class StudentCourseUpdateView(LoginRequiredMixin, UpdateView):
             self.object.course, self.object.included, self.request.user
         ):
             # no more seminars/internships creditable
-            return redirect("course-confirm", course_id=self.object.pk)
+            return redirect("studentcourse-confirm", course_id=self.object.pk)
 
-        return redirect("course-detail", course_id=self.object.pk)
+        return redirect("studentcourse-detail", course_id=self.object.pk)
 
 
 class StudentCourseDeleteView(LoginRequiredMixin, DeleteView):
@@ -164,13 +166,18 @@ class StudentCourseDeleteView(LoginRequiredMixin, DeleteView):
     success_url = "/"
 
 
-class SpecializationCreateView(CreateView):
+class SpecializationCreateView(LoginRequiredMixin, CreateView):
     model = Specialization
     fields = "__all__"
 
 
-class CourseTypeCreateView(CreateView):
+class CourseTypeCreateView(LoginRequiredMixin, CreateView):
     model = CourseType
+    fields = "__all__"
+
+
+class CourseCreateView(CreatePopupMixin, LoginRequiredMixin, CreateView):
+    model = Course
     fields = "__all__"
 
 

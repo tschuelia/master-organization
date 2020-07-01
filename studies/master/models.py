@@ -137,7 +137,9 @@ class CourseType(models.Model):
 # The course itself
 class Course(models.Model):
     course_name = models.CharField(max_length=200, verbose_name="Titel")
-    credit_points = models.IntegerField(default=0, verbose_name="ECTS")
+    credit_points = models.DecimalField(
+        max_digits=3, decimal_places=1, default=0, verbose_name="ECTS"
+    )
     course_type = models.ForeignKey(
         CourseType,
         on_delete=models.SET_NULL,
@@ -148,10 +150,6 @@ class Course(models.Model):
     specializations = models.ManyToManyField(
         Specialization, blank=True, verbose_name="Vertiefungsfächer laut Modulhandbuch"
     )
-    # category = models.ForeignKey(Category, on_delete=models.SET_NULL, default=None, null=True, verbose_name='Kategorie')
-    # semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, default=None, null=True, verbose_name='Prüfungssemester')
-    # grade = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True, default=0, verbose_name='Note')
-    # included = models.BooleanField(default=True, verbose_name='In Berechnung mit einbeziehen?')
 
     def __str__(self):
         return self.course_name
@@ -160,7 +158,7 @@ class Course(models.Model):
         return min(self.category.max_ects_creditable, self.credit_points)
 
     def get_absolute_url(self):
-        return reverse("course-detail", kwargs={"course_id": self.pk})
+        return reverse("studentcourse-detail", kwargs={"course_id": self.pk})
 
     def get_specializations_abbreviations(self):
         l = [c.specialization_abbreviation for c in self.specializations.all()]
@@ -273,18 +271,10 @@ class StudentCourse(models.Model):
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Kurs")
     category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        default=None,
-        null=True,
-        verbose_name="Kategorie",
+        Category, on_delete=models.CASCADE, null=False, verbose_name="Kategorie",
     )
     semester = models.ForeignKey(
-        Semester,
-        on_delete=models.SET_NULL,
-        default=None,
-        null=True,
-        verbose_name="Prüfungssemester",
+        Semester, on_delete=models.CASCADE, null=False, verbose_name="Prüfungssemester",
     )
     grade = models.DecimalField(
         max_digits=2,

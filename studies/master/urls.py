@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import (
+    CourseCreateView,
     CourseTypeCreateView,
     SpecializationCreateView,
     StudentCourseCreateView,
@@ -14,25 +15,34 @@ urlpatterns = [
     path("", views.overview, name="overview"),
     path("semesterview", views.semesters, name="semester-view"),
     # /master/course/5/
-    path("course/<int:course_id>", views.studentcourse_detail, name="course-detail"),
-    path("course/new/", StudentCourseCreateView.as_view(), name="course-create"),
     path(
-        "course/<int:course_id>/confirm",
+        "studentcourse/<int:course_id>",
+        views.studentcourse_detail,
+        name="studentcourse-detail",
+    ),
+    path(
+        "studentcourse/new/",
+        StudentCourseCreateView.as_view(),
+        name="studentcourse-create",
+    ),
+    path(
+        "studentcourse/<int:course_id>/confirm",
         views.confirm_studentcourse,
-        name="course-confirm",
+        name="studentcourse-confirm",
     ),
     path(
-        "course/<int:pk>/update",
+        "studentcourse/<int:pk>/update",
         StudentCourseUpdateView.as_view(),
-        name="course-update",
+        name="studentcourse-update",
     ),
     path(
-        "course/<int:pk>/delete",
+        "studentcourse/<int:pk>/delete",
         StudentCourseDeleteView.as_view(),
-        name="course-delete",
+        name="studentcourse-delete",
     ),
     path("student/", views.student_view, name="student"),
     path("student/<int:pk>/update", UpdateStudent.as_view(), name="student-update"),
+    path("course/new", CourseCreateView.as_view(), name="course-create"),
     path(
         "specialization/new",
         SpecializationCreateView.as_view(),

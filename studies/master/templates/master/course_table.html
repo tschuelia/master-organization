@@ -12,7 +12,7 @@
         </tr>
         {% for c in courses %}
         <tr>
-            <td><a class="course-detail-link" href="{% url 'course-detail' c.pk %}">{{ c.course.course_name }}</a></td>
+            <td><a class="studentcourse-detail-link" href="{% url 'studentcourse-detail' c.pk %}">{{ c.course.course_name }}</a></td>
             <td>{{ c.course.credit_points }}</td>
             <td>{{ c.course.course_type }}</td>
             <td>{{ c.course.get_specializations_abbreviations }}</td>

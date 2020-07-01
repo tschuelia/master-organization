@@ -6,7 +6,7 @@
     <p>Möchtest du {{ studentcourse.course_name }} dennoch zu deinem Studium hinzufügen?</p>
     <p>Das {{ studentcourse.course_type }} wird dann nicht in die Anzahl ECTS und Durschnittsnote miteinberechnet.</p>
     <p>Du kannst die Auswahl der angerechneten Kurse auch später noch ändern.</p>
-    <form method="POST" action="{% url 'course-delete' studentcourse.pk%}">
+    <form method="POST" action="{% url 'studentcourse-delete' studentcourse.pk%}">
         {% csrf_token %}
         <button class="btn btn-outline-info" type="sumbit">Nein, löschen</button>
     </form>
