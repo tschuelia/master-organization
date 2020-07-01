@@ -2,3 +2,7 @@ Django<4
 django-crispy-forms<2
 django-fontawesome-5
 django-activeurl
+django-addanother
+whitenoise<6
+gunicorn
+dj_static
