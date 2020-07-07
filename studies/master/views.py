@@ -101,6 +101,19 @@ def semesters(request):
     return render(request, "master/semester_view.html", {"params": params})
 
 
+@login_required
+def exam_date_view(request):
+    student = request.user
+    semesters = Semester.objects.all()
+    semesters.order_by("year")
+
+    params = []
+    for sem in semesters:
+        courses = sem.get_courses(student)
+        params.append((sem, courses))
+    return render(request, "master/exam_dates.html", {"params": params})
+
+
 # Course details
 @login_required
 def studentcourse_detail(request, course_id):
@@ -183,6 +196,7 @@ class CourseCreateView(CreatePopupMixin, LoginRequiredMixin, CreateView):
     fields = "__all__"
 
 
+@login_required
 def student_view(request):
     return render(request, "master/student.html", {"student": request.user})
 

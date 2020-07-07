@@ -4,8 +4,8 @@
 <div class="card my-4">
   <h5 class="card-header">{{ sem }}</h5>
   <div class="card-body">
-    <h6 class="card-title">ECTS: {{ values.credits }}</h6>
-    <h6 class="card-title">Semesterdurchschnitt: {% if values.average > 0 %}{{ values.average }} {% else %} Noch keine Noten für dieses Semester {% endif %}</h6>
+    <h6 class="card-title">ECTS: {{ values.credits|floatformat }}</h6>
+    <h6 class="card-title">Semesterdurchschnitt: {% if values.average > 0 %}{{ values.average }} {% else %} Keine Noten für dieses Semester eingetragen {% endif %}</h6>
     {% include "master/course_table.html" with courses=values.courses %}
   </div>
 </div>

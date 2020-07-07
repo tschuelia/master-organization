@@ -1,3 +1,4 @@
+from bootstrap_datepicker_plus import DateTimePickerInput
 from django import forms
 from django.urls import reverse_lazy
 from django_addanother.widgets import AddAnotherWidgetWrapper
@@ -24,6 +25,7 @@ class StudentCourseForm(forms.ModelForm):
                 ),
                 reverse_lazy("course-create"),
             ),
+            "exam_date": DateTimePickerInput(format="%Y-%m-%d %H:%M"),
             "category": forms.Select(
                 attrs={"class": "selectpicker", "data-live-search": "true",}
             ),

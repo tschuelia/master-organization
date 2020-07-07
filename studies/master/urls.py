@@ -49,4 +49,5 @@ urlpatterns = [
         name="specialization-create",
     ),
     path("type/new", CourseTypeCreateView.as_view(), name="type-create"),
+    path("exams", views.exam_date_view, name="exam-dates"),
 ]

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "fontawesome_5",
     "django_activeurl",
     "django_addanother",
+    "bootstrap_datepicker_plus",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -105,7 +106,7 @@ AUTH_USER_MODEL = "master.student"
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "de-de"
 
 TIME_ZONE = "UTC"
 

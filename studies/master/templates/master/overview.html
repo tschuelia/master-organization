@@ -10,15 +10,15 @@
           <tbody>
             <tr>
               <td>ECTS gesamt (geplant)</td>
-              <td>{{ total_credits }}</td>
+              <td>{{ total_credits|floatformat }}</td>
             </tr>
             <tr>
               <td>ECTS bestandene Prüfungen</td>
-              <td>{{ total_credits_passed }}</td>
+              <td>{{ total_credits_passed|floatformat }}</td>
             </tr>
             <tr>
               <td>fehlende ECTS (ohne Masterarbeit)</td>
-              <td>{{ total_missing_credits }}</td>
+              <td>{{ total_missing_credits|floatformat }}</td>
             </tr>
             <tr>
               <td>Durchschnitt</td>
@@ -26,7 +26,7 @@
                 {% if total_average > 0 %}
                 {{ total_average }}
                 {% else %}
-                Noch keine Noten eingetragen
+                Keine Noten eingetragen
                 {% endif %}
               </td>
             </tr>
@@ -64,11 +64,11 @@
           <tbody>
             <tr>
               <td>ECTS</td>
-              <td>{{ sum_credits_int_sem  }}</td>
+              <td>{{ sum_credits_int_sem|floatformat  }}</td>
             </tr>
             <tr>
               <td>fehlende ECTS</td>
-              <td>{{ missing_int_sem }}</td>
+              <td>{{ missing_int_sem|floatformat }}</td>
             </tr>
           </tbody>
         </table>

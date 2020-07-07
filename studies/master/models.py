@@ -254,7 +254,9 @@ class Semester(models.Model):
         return self.term + " " + self.year
 
     def get_courses(self, student):
-        return self.studentcourse_set.all().filter(student=student)
+        return (
+            self.studentcourse_set.all().filter(student=student).order_by("exam_date")
+        )
 
     def get_included_courses(self, student):
         return (
@@ -292,6 +294,9 @@ class StudentCourse(models.Model):
     )
     semester = models.ForeignKey(
         Semester, on_delete=models.CASCADE, null=False, verbose_name="Prüfungssemester",
+    )
+    exam_date = models.DateTimeField(
+        verbose_name="Prüfungstermin", blank=True, null=True
     )
     grade = models.DecimalField(
         max_digits=2,

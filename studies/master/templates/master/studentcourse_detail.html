@@ -28,11 +28,15 @@
                     <td>{{ studentcourse.semester }}</td>
                 </tr>
                 <tr>
+                    <td>Prüfungstermin</td>
+                    <td>{% if studentcourse.exam_date %}{{ studentcourse.exam_date }} {% else %} Kein Prüfungstermin eingetragen {% endif %}</td>
+                </tr>
+                <tr>
                     <td>Note</td>
                     <td>{% if studentcourse.grade > 0 %}
                         {{ studentcourse.grade }}
                         {% else %}
-                        Noch keine Note eingetragen
+                        Keine Note eingetragen
                         {% endif %}
                     </td>
                 </tr>

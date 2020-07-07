@@ -1,12 +1,15 @@
-<div class="table-responsive">
-
+{% extends 'master/base.html' %}
+{% block content %}
+{% for sem, courses in params %}
+<div class="card my-4">
+  <h5 class="card-header">{{ sem }}</h5>
+  <div class="card-body">
+    <div class="table-responsive">
     <table class="table">
         <tr>
             <th>Kursname</th>
             <th>ECTS</th>
-            <th>Kurstyp</th>
-            <th>mögliche Vertiefungsfächer</th>
-            <th>Prüfungssemester</th>
+            <th>Prüfungstermin</th>
             <th>Note</th>
             <th>angerechnet</th>
         </tr>
@@ -14,12 +17,14 @@
         <tr>
             <td><a class="studentcourse-detail-link" href="{% url 'studentcourse-detail' c.pk %}">{{ c.course.course_name }}</a></td>
             <td>{{ c.course.credit_points|floatformat }}</td>
-            <td>{{ c.course.course_type }}</td>
-            <td>{{ c.course.get_specializations_abbreviations }}</td>
-            <td>{{ c.semester }}</td>
+            <td> {% if c.exam_date %} {{ c.exam_date }} {% else %}Kein Prüfungstermin eingetragen{% endif %}</td>
             <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Keine Note eingetragen {% endif %}</td>
             <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
         </tr>
         {% endfor %}
     </table>
 </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock content %}

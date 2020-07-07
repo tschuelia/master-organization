@@ -2,19 +2,19 @@
     <tbody>
         <tr>
             <td>ECTS</td>
-            <td>{{ param.sum_of_credits }}</td>
+            <td>{{ param.sum_of_credits|floatformat }}</td>
         </tr>
         {% if render_missing %}
         <tr>
             <td>fehlende ECTS</td>
-            <td>{{ param.missing_credits }}</td>
+            <td>{{ param.missing_credits|floatformat }}</td>
         </tr>
         {% endif %}
 
         {% if render_possible %}
         <tr>
             <td>noch mögliche ECTS</td>
-            <td>{{ param.possible_credits }}</td>
+            <td>{{ param.possible_credits|floatformat }}</td>
         </tr>
         {% endif %}
         <tr>
@@ -22,7 +22,7 @@
             <td>{% if param.average > 0 %}
                 {{ param.average }}
                 {% else %}
-                Noch keine Noten für diese Kategorie eingetragen
+                Keine Noten für diese Kategorie eingetragen
                 {% endif %}
             </td>
         </tr>
