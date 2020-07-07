@@ -96,7 +96,7 @@
 
 <!-- Ergänzungsfach -->
 <div class="card my-4">
-  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
+  <h5 class="card-header {% if minor.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
   <div class="card-body">
     {% include "master/category_metadata.html" with param=minor render_missing=True render_possible=True %}
     {% include "master/course_table.html" with courses=minor.courses %}
@@ -105,7 +105,7 @@
 
 <!-- Schlüsselqualis -->
 <div class="card my-4">
-  <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Schlüsselqualifikationen</h5>
+  <h5 class="card-header {% if soft_skills.is_valid %} text-success {% else %} text-danger {% endif %}">Schlüsselqualifikationen</h5>
   <div class="card-body">
     {% include "master/category_metadata.html" with param=soft_skills render_missing=True render_possible=True  %}
     {% include "master/course_table.html" with courses=soft_skills.courses %}

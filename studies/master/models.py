@@ -214,7 +214,7 @@ class Category(models.Model):
 
     def get_missing_credits(self, student):
         if not self.min_ects_required:
-            return -1
+            return 0
         return max(0, self.min_ects_required - self.get_sum_of_credits(student))
 
     def get_possible_credits(self, student):
@@ -353,13 +353,7 @@ def get_credits_sem_int(student):
 
 
 def get_missing_credits_sem_int(student):
-    internships = get_object_or_404(CourseType, type_name="Praktikum")
-    seminars = get_object_or_404(CourseType, type_name="Seminar")
-
-    missing_int = internships.get_missing_credits(student)
-    missing_sem = seminars.get_missing_credits(student)
-
-    return missing_int + missing_sem
+    return max(0, 12 - get_credits_sem_int(student))
 
 
 def course_not_creditable(course, included, student):
