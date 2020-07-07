@@ -77,7 +77,7 @@ class CourseType(models.Model):
     )
 
     def __str__(self):
-        return self.type_name
+        return self.type_abbreviation
 
     def get_absolute_url(self):
         return reverse("overview")

@@ -7,6 +7,7 @@
             <th>Kurstyp</th>
             <th>mögliche Vertiefungsfächer</th>
             <th>Prüfungssemester</th>
+            <th>Prüfungstermin</th>
             <th>Note</th>
             <th>angerechnet</th>
         </tr>
@@ -17,7 +18,8 @@
             <td>{{ c.course.course_type }}</td>
             <td>{{ c.course.get_specializations_abbreviations }}</td>
             <td>{{ c.semester }}</td>
-            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} Keine Note eingetragen {% endif %}</td>
+            <td> {% if c.exam_date %} {{ c.exam_date }} {% else %}k.A.{% endif %}</td>
+            <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} k.A. {% endif %}</td>
             <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
         </tr>
         {% endfor %}
