@@ -1,0 +1,7 @@
+{% if exam_date and exam_date >= now %} 
+    {{ exam_date }}
+{% elif exam_date and exam_date < now  %}
+    <del>{{ exam_date }}</del> 
+{% else %}
+    k.A.
+{% endif %}

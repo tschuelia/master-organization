@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django_addanother.views import CreatePopupMixin
 
@@ -111,7 +112,10 @@ def exam_date_view(request):
     for sem in semesters:
         courses = sem.get_courses(student)
         params.append((sem, courses))
-    return render(request, "master/exam_dates.html", {"params": params})
+
+    return render(
+        request, "master/exam_dates.html", {"params": params, "now": timezone.now()}
+    )
 
 
 # Course details

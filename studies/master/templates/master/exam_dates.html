@@ -17,7 +17,7 @@
         <tr>
             <td><a class="studentcourse-detail-link" href="{% url 'studentcourse-detail' c.pk %}">{{ c.course.course_name }}</a></td>
             <td>{{ c.course.credit_points|floatformat }}</td>
-            <td> {% if c.exam_date %} {{ c.exam_date }} {% else %}k.A.{% endif %}</td>
+            <td> {% include "master/exam_date.html" with exam_date=c.exam_date now=now%}</td>
             <td>{% if c.grade > 0 %}{{ c.grade }} {% else %} k.A. {% endif %}</td>
             <td>{% if c.included %}<i class="fas fa-check"></i> {% else %}<i class="fas fa-times"></i>{% endif %}</td>
         </tr>
