@@ -9,7 +9,7 @@ Implements among other things:
 * Experimenting with the average grade by enabling or disabling courses
 
 ## Usage
-The tool is up on <a href="master.juliaschmid.com">master.juliaschmid.com.</a>
+The tool is up on <a href="http://master.juliaschmid.com">master.juliaschmid.com.</a>
 If you want to use it ask me for an account. 
 
 ## Using the codebase
