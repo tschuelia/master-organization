@@ -1,10 +1,12 @@
 from math import floor
+import numpy as np
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+
 
 MAX_CREDITS_SEM_INT = 18
 
@@ -117,21 +119,21 @@ class CourseType(models.Model):
         return self.get_missing_credits(student) == 0
 
     def get_average(self, student):
-        sum_grades = sum(
-            c.grade * c.course.credit_points
+        credits_grades = [
+            (c.course.credit_points, c.grade)
             for c in self.get_included_courses(student)
             if c.grade > 0
-        )
-        sum_credits_with_grade = sum(
-            c.course.credit_points
-            for c in self.get_included_courses(student)
-            if c.grade > 0
-        )
+        ]
+        if not credits_grades:
+            return 0.0
 
-        if sum_credits_with_grade <= 0:
-            return 0
+        ects, grades = zip(*credits_grades)
 
-        return floor(10 * (sum_grades / sum_credits_with_grade)) / 10
+        if not ects or not grades:
+            return 0.0
+
+        avg = np.average(a=grades, weights=ects)
+        return avg
 
 
 # The course itself
@@ -226,21 +228,21 @@ class Category(models.Model):
         return self.get_missing_credits(student) == 0
 
     def get_average(self, student):
-        sum_grades = sum(
-            c.grade * c.course.credit_points
+        credits_grades = [
+            (c.course.credit_points, c.grade)
             for c in self.get_included_courses(student)
             if c.grade > 0
-        )
-        sum_credits_with_grade = sum(
-            c.course.credit_points
-            for c in self.get_included_courses(student)
-            if c.grade > 0
-        )
+        ]
+        if not credits_grades:
+            return 0.0
 
-        if sum_credits_with_grade <= 0:
-            return 0
+        ects, grades = zip(*credits_grades)
 
-        return floor(10 * (sum_grades / sum_credits_with_grade)) / 10
+        if not ects or not grades:
+            return 0.0
+
+        avg = np.average(a=grades, weights=ects)
+        return avg
 
 
 class Semester(models.Model):
@@ -267,21 +269,21 @@ class Semester(models.Model):
         return sum(c.course.credit_points for c in self.get_included_courses(student))
 
     def get_average(self, student):
-        sum_grades = sum(
-            c.grade * c.course.credit_points
+        credits_grades = [
+            (c.course.credit_points, c.grade)
             for c in self.get_included_courses(student)
             if c.grade > 0
-        )
-        sum_credits_with_grade = sum(
-            c.course.credit_points
-            for c in self.get_included_courses(student)
-            if c.grade > 0
-        )
+        ]
+        if not credits_grades:
+            return 0.0
 
-        if sum_credits_with_grade <= 0:
-            return 0
+        ects, grades = zip(*credits_grades)
 
-        return floor(10 * (sum_grades / sum_credits_with_grade)) / 10
+        if not ects or not grades:
+            return 0.0
+
+        avg = np.average(a=grades, weights=ects)
+        return avg
 
 
 class StudentCourse(models.Model):
@@ -290,10 +292,16 @@ class StudentCourse(models.Model):
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Kurs")
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=False, verbose_name="Kategorie",
+        Category,
+        on_delete=models.CASCADE,
+        null=False,
+        verbose_name="Kategorie",
     )
     semester = models.ForeignKey(
-        Semester, on_delete=models.CASCADE, null=False, verbose_name="Prüfungssemester",
+        Semester,
+        on_delete=models.CASCADE,
+        null=False,
+        verbose_name="Prüfungssemester",
     )
     exam_date = models.DateTimeField(
         verbose_name="Prüfungstermin", blank=True, null=True
@@ -326,21 +334,24 @@ def get_total_credits_passed(student):
 
 def get_total_average(student):
     categories = Category.objects.all()
-    sum_credits = sum(
-        c.course.credit_points
+
+    credits_grades = [
+        (c.course.credit_points, c.grade)
         for cat in categories
         for c in cat.get_included_courses(student)
         if c.grade > 0
-    )
-    total_grades = sum(
-        c.grade * c.course.credit_points
-        for cat in categories
-        for c in cat.get_included_courses(student)
-        if c.grade > 0
-    )
-    if sum_credits <= 0:
-        return 0
-    return floor(10 * (total_grades / sum_credits)) / 10
+    ]
+
+    if not credits_grades:
+        return 0.0
+
+    ects, grades = zip(*credits_grades)
+
+    if not ects or not grades:
+        return 0.0
+
+    avg = np.average(a=grades, weights=ects)
+    return avg
 
 
 def get_credits_sem_int(student):
