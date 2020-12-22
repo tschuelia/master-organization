@@ -1,6 +1,5 @@
 from math import floor
-import numpy as np
-
+from decimal import Decimal, ROUND_FLOOR
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -132,7 +131,9 @@ class CourseType(models.Model):
         if not ects or not grades:
             return 0.0
 
-        avg = np.average(a=grades, weights=ects)
+        credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
+
+        avg = sum(credits_averages) / sum(ects)
         return avg
 
 
@@ -234,15 +235,21 @@ class Category(models.Model):
             if c.grade > 0
         ]
         if not credits_grades:
-            return 0.0
+            return Decimal(0)
 
         ects, grades = zip(*credits_grades)
 
         if not ects or not grades:
-            return 0.0
+            return Decimal(0)
 
-        avg = np.average(a=grades, weights=ects)
+        credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
+
+        avg = sum(credits_averages) / sum(ects)
         return avg
+
+    def get_kit_average(self, student):
+        avg = self.get_average(student)
+        return avg.quantize(Decimal(".1"), rounding=ROUND_FLOOR)
 
 
 class Semester(models.Model):
@@ -279,10 +286,9 @@ class Semester(models.Model):
 
         ects, grades = zip(*credits_grades)
 
-        if not ects or not grades:
-            return 0.0
+        credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
 
-        avg = np.average(a=grades, weights=ects)
+        avg = sum(credits_averages) / sum(ects)
         return avg
 
 
@@ -347,11 +353,36 @@ def get_total_average(student):
 
     ects, grades = zip(*credits_grades)
 
-    if not ects or not grades:
-        return 0.0
+    credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
 
-    avg = np.average(a=grades, weights=ects)
+    avg = sum(credits_averages) / sum(ects)
     return avg
+
+
+def get_kit_average(student):
+    """
+    The total average at KIT is calculated by calculating the floored average for the categories
+    - "VF1"
+    - "VF2"
+    - "Wahlbereich"
+    - "Nebenfach"
+    - "Schlüsselquali"
+    respectively and then averaging this and flooring it again (weird but what ever)
+    """
+    all_cats = Category.objects.all()
+
+    ects = [cat.get_sum_of_credits_with_grade(student) for cat in all_cats]
+
+    avgs = [cat.get_kit_average(student) for cat in all_cats]
+
+    credits_averages = [(ects[i]) * avgs[i] for i in range(len(ects))]
+
+    if not credits_averages:
+        return 0
+
+    avg = sum(credits_averages) / sum(ects)
+
+    return floor(avg * 10) / 10
 
 
 def get_credits_sem_int(student):

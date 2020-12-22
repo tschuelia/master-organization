@@ -2,7 +2,7 @@
   <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">
     {{ title }}{% if choice %}: {{ choice }} {% endif %}</h5>
   <div class="card-body">
-    {% include "master/category_metadata.html" with param=param render_missing=True render_possible=False  %}
+    {% include "master/category_metadata.html" with param=param render_missing=True render_possible=False render_kit_avg=render_kit_avg %}
     {% include "master/course_table.html" with courses=param.courses %}
   </div>
 </div>

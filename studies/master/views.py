@@ -18,6 +18,7 @@ from .models import (
     course_not_creditable,
     get_credits_sem_int,
     get_missing_credits_sem_int,
+    get_kit_average,
     get_total_average,
     get_total_credits,
     get_total_credits_passed,
@@ -33,6 +34,7 @@ def accumulate_information_for_category(category, student):
         "missing_credits": cat.get_missing_credits(student),
         "possible_credits": cat.get_possible_credits(student),
         "average": cat.get_average(student),
+        "kit_average": cat.get_kit_average(student),
     }
 
 
@@ -65,6 +67,7 @@ def overview(request):
         "total_credits_passed": get_total_credits_passed(student),
         "total_missing_credits": 90 - get_total_credits(student),
         "total_average": get_total_average(student),
+        "total_kit_average": get_kit_average(student),
         "major1": accumulate_information_for_category("Vertiefungsfach 1", student),
         "major2": accumulate_information_for_category("Vertiefungsfach 2", student),
         "minor": accumulate_information_for_category("Ergänzungsfach", student),

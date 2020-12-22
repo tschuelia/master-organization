@@ -26,5 +26,17 @@
                 {% endif %}
             </td>
         </tr>
+        {% if render_kit_avg %}
+        <tr>
+            <td>KIT Durchschnitt</td>
+            <td>
+                {% if param.kit_average > 0 %}
+                {{ param.kit_average }}
+                {% else %}
+                Keine Noten für diese Kategorie eingetragen
+                {% endif %}
+            </td>
+        </tr>
+        {% endif %}
     </tbody>
 </table>

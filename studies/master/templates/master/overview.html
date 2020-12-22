@@ -21,7 +21,17 @@
               <td>{{ total_missing_credits|floatformat }}</td>
             </tr>
             <tr>
-              <td>Durchschnitt</td>
+              <td>KIT Durchschnitt</td>
+              <td>
+                {% if total_kit_average > 0 %}
+                {{ total_kit_average }}
+                {% else %}
+                Keine Noten eingetragen
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>echter Durchschnitt</td>
               <td>
                 {% if total_average > 0 %}
                 {{ total_average }}
@@ -37,21 +47,21 @@
   </div>
 </div>
 <!-- Vertiefungsfach 1 -->
-{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 choice=student.major1 %}
+{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 1" param=major1 choice=student.major1 render_kit_avg=True %}
 <!-- Vertiefungsfach 2 -->
-{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 2" param=major2 choice=student.major2 %}
+{% include "master/overview_basic_courses.html" with title="Vertiefungsfach 2" param=major2 choice=student.major2 render_kit_avg=True %}
 
 <!-- Wahlbereich -->
 <div class="card my-4">
   <h5 class="card-header {% if param.is_valid %} text-success {% else %} text-danger {% endif %}">Wahlbereich</h5>
   <div class="card-body">
-    {% include "master/category_metadata.html" with param=electives render_missing=False render_possible=True  %}
+    {% include "master/category_metadata.html" with param=electives render_missing=False render_possible=True render_kit_avg=True %}
     {% include "master/course_table.html" with courses=electives.courses %}
   </div>
 </div>
 
 <!-- Stammmodule -->
-{% include "master/overview_basic_courses.html" with title="Stammmodule" param=base_modules%}
+{% include "master/overview_basic_courses.html" with title="Stammmodule" param=base_modules render_kit_avg=False %}
 
 <!-- Praktika und Seminare -->
 <div class="card my-4">
@@ -78,14 +88,14 @@
       <h5 class="card-header {% if internships.is_valid %} text-success {% else %} text-danger {% endif %}">Praktika
       </h5>
       <div class="card-body">
-        {% include "master/category_metadata.html" with param=internships render_missing=True render_possible=False  %}
+        {% include "master/category_metadata.html" with param=internships render_missing=True render_possible=False render_kit_avg=False %}
         {% include "master/course_table.html" with courses=internships.courses %}
       </div>
     </div>
     <div class="card my-4">
       <h5 class="card-header {% if seminars.is_valid %} text-success {% else %} text-danger {% endif %}">Seminare</h5>
       <div class="card-body">
-        {% include "master/category_metadata.html" with param=seminars render_missing=True render_possible=False  %}
+        {% include "master/category_metadata.html" with param=seminars render_missing=True render_possible=False render_kit_avg=False %}
         {% include "master/course_table.html" with courses=seminars.courses %}
       </div>
     </div>
@@ -98,7 +108,7 @@
 <div class="card my-4">
   <h5 class="card-header {% if minor.is_valid %} text-success {% else %} text-danger {% endif %}">Ergänzungsfach</h5>
   <div class="card-body">
-    {% include "master/category_metadata.html" with param=minor render_missing=True render_possible=True %}
+    {% include "master/category_metadata.html" with param=minor render_missing=True render_possible=True render_kit_avg=True %}
     {% include "master/course_table.html" with courses=minor.courses %}
   </div>
 </div>
@@ -107,7 +117,7 @@
 <div class="card my-4">
   <h5 class="card-header {% if soft_skills.is_valid %} text-success {% else %} text-danger {% endif %}">Schlüsselqualifikationen</h5>
   <div class="card-body">
-    {% include "master/category_metadata.html" with param=soft_skills render_missing=True render_possible=True  %}
+    {% include "master/category_metadata.html" with param=soft_skills render_missing=True render_possible=True render_kit_avg=True %}
     {% include "master/course_table.html" with courses=soft_skills.courses %}
   </div>
 </div>
