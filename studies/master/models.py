@@ -134,7 +134,7 @@ class CourseType(models.Model):
         credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
 
         avg = sum(credits_averages) / sum(ects)
-        return avg
+        return avg.quantize(Decimal(".0001"), rounding=ROUND_FLOOR)
 
 
 # The course itself
@@ -245,7 +245,7 @@ class Category(models.Model):
         credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
 
         avg = sum(credits_averages) / sum(ects)
-        return avg
+        return avg.quantize(Decimal(".0001"), rounding=ROUND_FLOOR)
 
     def get_kit_average(self, student):
         avg = self.get_average(student)
@@ -289,7 +289,7 @@ class Semester(models.Model):
         credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
 
         avg = sum(credits_averages) / sum(ects)
-        return avg
+        return avg.quantize(Decimal(".0001"), rounding=ROUND_FLOOR)
 
 
 class StudentCourse(models.Model):
@@ -356,7 +356,7 @@ def get_total_average(student):
     credits_averages = [ects[i] * grades[i] for i in range(len(ects))]
 
     avg = sum(credits_averages) / sum(ects)
-    return avg
+    return avg.quantize(Decimal(".0001"), rounding=ROUND_FLOOR)
 
 
 def get_kit_average(student):
@@ -382,7 +382,7 @@ def get_kit_average(student):
 
     avg = sum(credits_averages) / sum(ects)
 
-    return floor(avg * 10) / 10
+    return avg.quantize(Decimal(".1"), rounding=ROUND_FLOOR)
 
 
 def get_credits_sem_int(student):
